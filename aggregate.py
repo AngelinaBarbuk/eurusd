@@ -3,8 +3,11 @@ import os
 from os.path import join
 
 import pandas as pd
+import numpy as np
 import datetime
 import argparse
+
+from sklearn.preprocessing import MinMaxScaler
 
 
 def _parse_args():
@@ -77,9 +80,35 @@ def save_aggregated(time_series_df, output_filename):
     time_series_df.to_csv(ts_values_filename, na_rep='n', header=False, index=False)
 
 
+sc = MinMaxScaler(feature_range=(0, 1))
+
+
+def create_test_train(dataset, n=60, percentage=0.9):
+    dataset_scaled = sc.fit_transform(dataset)
+    p = int(len(dataset_scaled) * percentage)
+    training_set = dataset_scaled[:p]
+    test_set = dataset_scaled[p:]
+
+    X_train = []
+    y_train = []
+    for i in range(n, len(training_set) - 1):
+        X_train.append(training_set[i - n:i])
+        y_train.append(training_set[i + 1])
+    X_train, y_train = np.array(X_train), np.array(y_train)
+
+    X_test = []
+    y_test = test_set[60:]
+    for i in range(n, len(test_set)):
+        X_test.append(test_set[i - n:i])
+    X_test = np.array(X_test)
+
+    return X_train, y_train, X_test, y_test
+
+
 def _main(args):
     ts_values_df = aggregate(args.data_dir, args.begin_date, args.end_date, args.columns.split(','))
-    save_aggregated(ts_values_df, args.output_filename)
+    # get_slice(ts_values_df,0,0,0)
+    create_test_train(ts_values_df)
 
 
 if __name__ == '__main__':
