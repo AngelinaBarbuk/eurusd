@@ -7,14 +7,14 @@ import numpy as np
 import datetime
 import argparse
 
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
 
 def _parse_args():
     parser = argparse.ArgumentParser(prog='Aggregates cryptocurrency data from all subdirectories to two files with'
                                           ' indexes and series. Data is filtered according to chosen dates range.')
     parser.add_argument('--data_dir', default="history", help='Path to directory with cryptocurrency data')
-    parser.add_argument('--begin_date', default="2017.01.01", help="Begin date in format 'dd.mm.yyyy'")
+    parser.add_argument('--begin_date', default="2018.04.01", help="Begin date in format 'dd.mm.yyyy'")
     parser.add_argument('--end_date', default="2018.12.31", help="End date in format 'dd.mm.yyyy'")
     parser.add_argument('--columns', default='O,H,L,C', help="List of columns to fetch, separated by ','")
     parser.add_argument('--output_filename', default='aggregated',
@@ -80,7 +80,7 @@ def save_aggregated(time_series_df, output_filename):
     time_series_df.to_csv(ts_values_filename, na_rep='n', header=False, index=False)
 
 
-sc = MinMaxScaler(feature_range=(0, 1))
+sc = StandardScaler()
 
 
 def create_test_train(dataset, n=60, percentage=0.9):
@@ -93,11 +93,11 @@ def create_test_train(dataset, n=60, percentage=0.9):
     y_train = []
     for i in range(n, len(training_set) - 1):
         X_train.append(training_set[i - n:i])
-        y_train.append(training_set[i + 1])
+        y_train.append(training_set[i + 1, -1])
     X_train, y_train = np.array(X_train), np.array(y_train)
 
     X_test = []
-    y_test = test_set[60:]
+    y_test = test_set[60:, -1]
     for i in range(n, len(test_set)):
         X_test.append(test_set[i - n:i])
     X_test = np.array(X_test)
