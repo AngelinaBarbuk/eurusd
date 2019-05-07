@@ -14,7 +14,7 @@ def _parse_args():
     parser = argparse.ArgumentParser(prog='Aggregates cryptocurrency data from all subdirectories to two files with'
                                           ' indexes and series. Data is filtered according to chosen dates range.')
     parser.add_argument('--data_dir', default="history", help='Path to directory with cryptocurrency data')
-    parser.add_argument('--begin_date', default="2018.04.01", help="Begin date in format 'dd.mm.yyyy'")
+    parser.add_argument('--begin_date', default="2017.01.01", help="Begin date in format 'dd.mm.yyyy'")
     parser.add_argument('--end_date', default="2018.12.31", help="End date in format 'dd.mm.yyyy'")
     parser.add_argument('--columns', default='O,H,L,C', help="List of columns to fetch, separated by ','")
     parser.add_argument('--output_filename', default='aggregated',
