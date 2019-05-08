@@ -4,6 +4,8 @@ from aggregate import aggregate, create_test_train
 from model_1 import Model_1
 from model_2 import Model_2
 from model_3 import Model_3
+from model_4 import Model_4
+from model_5 import Model_5
 from simple_model import SimpleModel
 
 
@@ -30,6 +32,8 @@ def _main(args):
     model_1, predicted_1 = run_model(Model_1(), X_train, y_train,X_test)
     model_2, predicted_2 = run_model(Model_2(), X_train, y_train, X_test)
     model_3, predicted_3 = run_model(Model_3(), X_train, y_train, X_test)
+    model_4, predicted_4 = run_model(Model_4(), X_train, y_train, X_test)
+    model_5, predicted_5 = run_model(Model_5(), X_train, y_train, X_test)
 
     print(predicted_1)
 

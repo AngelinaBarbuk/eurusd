@@ -6,20 +6,28 @@ from tensorflow.python.estimator import keras
 from utilities import get_path
 
 
-class Model_1:
+class Model_4:
     def __init__(self, file=None):
         if file:
             self.model = keras.models.load_model(file)
 
     def create(self, shape=[60, 4]):
         self.model = Sequential()
-        self.model.add(Dense(64, input_shape=shape))
+        self.model.add(Dense(256, input_shape=shape))
+        self.model.add(BatchNormalization())
+        self.model.add(LeakyReLU())
+        self.model.add(Dense(64))
+        self.model.add(BatchNormalization())
+        self.model.add(LeakyReLU())
+        self.model.add(Dense(16))
+        self.model.add(BatchNormalization())
+        self.model.add(LeakyReLU())
         self.model.add(Flatten())
         self.model.add(Dense(1))
         self.model.add(Activation('linear'))
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
-    def fit(self, X_train, y_train, model_file="models/model_1.h5"):
+    def fit(self, X_train, y_train, model_file="models/model_4.h5"):
         self.X_train = X_train
         self.y_train = y_train
         checkpointer = ModelCheckpoint(filepath="checkpoints/" + model_file, verbose=1, save_best_only=True)

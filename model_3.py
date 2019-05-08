@@ -16,7 +16,7 @@ class Model_3:
         self.model.add(Activation('linear'))
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
-    def fit(self, X_train, y_train, model_file="'models/model_2.h5'"):
+    def fit(self, X_train, y_train, model_file="models/model_2.h5"):
         self.X_train = X_train
         self.y_train = y_train
         checkpointer = ModelCheckpoint(filepath="checkpoints/" + model_file, verbose=1, save_best_only=True)

@@ -26,7 +26,7 @@ def _get_filepath(data_dir, filename):
     return join(data_dir, filename)
 
 
-def aggregate(data_dir, begin_date, end_date, columns):
+def aggregate(data_dir, begin_date, end_date, columns='O,H,L,C'.split(',')):
     """
     Aggregates cryptocurrency data from all subdirectories in 'data_dir'.
     Data is filtered according to chosen dates range.
