@@ -26,7 +26,7 @@ def _get_filepath(data_dir, filename):
     return join(data_dir, filename)
 
 
-def aggregate(data_dir, begin_date, end_date, columns='O,H,L,C'.split(',')):
+def aggregate(data_dir, begin_date, end_date, columns='O,H,L,C'.split(','), fit=True):
     """
     Aggregates cryptocurrency data from all subdirectories in 'data_dir'.
     Data is filtered according to chosen dates range.
@@ -66,6 +66,8 @@ def aggregate(data_dir, begin_date, end_date, columns='O,H,L,C'.split(',')):
         data = data[columns]
 
         time_series_df = data if time_series_df is None else time_series_df.append(data)
+    if fit:
+        sc.fit(time_series_df)
     return time_series_df
 
 
@@ -84,7 +86,7 @@ sc = StandardScaler()
 
 
 def create_test_train(dataset, n=60, percentage=0.9):
-    dataset_scaled = sc.fit_transform(dataset)
+    dataset_scaled = sc.transform(dataset)
     p = int(len(dataset_scaled) * percentage)
     training_set = dataset_scaled[:p]
     test_set = dataset_scaled[p:]
